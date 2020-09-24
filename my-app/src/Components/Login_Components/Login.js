@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 // helper functions
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -63,16 +63,16 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState("");
 
   // helper functions
-  const loggingIn = (e) => {
+  const loggingIn = () => {
     setIsLoading(true);
 
     axiosWithAuth()
-      .post(`/api/instructor/login`, login)
+      .post(`https://fitnesssmaster.herokuapp.com/api/instructor/login`, login)
       .then((res) => {
         console.log("res", res);
         localStorage.setItem("token", res.data.token);
         console.log(res.data.token);
-        history.push("/InstructorLogin");
+        props.history.push("/InstructorClasses");
       })
       .catch((err) => console.log("Login Error", err));
   };
