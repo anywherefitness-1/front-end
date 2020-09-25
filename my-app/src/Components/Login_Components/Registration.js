@@ -54,8 +54,8 @@ const RegistrationForm = () => {
   const history = useHistory();
 
   const [instructor, setInstructor] = useState({
-    username: "client3",
-    password: "password3",
+    username: "",
+    password: "",
   });
 
   // helper functions

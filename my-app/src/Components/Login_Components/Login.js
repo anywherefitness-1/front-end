@@ -12,7 +12,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosWithAuth } from "../../Utils/axiosWithAuth";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,12 +66,12 @@ const LoginForm = (props) => {
   const loggingIn = () => {
     setIsLoading(true);
 
-    axiosWithAuth()
-      .post(`https://fitnesssmaster.herokuapp.com/api/instructor/login`, login)
+    axios
+      .post("https://fitnesssmaster.herokuapp.com/api/instructor/login", login)
       .then((res) => {
         console.log("res", res);
-        localStorage.setItem("token", res.data.token);
-        console.log(res.data.token);
+        localStorage.setItem("token", res.data.payload);
+        console.log(res.data);
         props.history.push("/InstructorClasses");
       })
       .catch((err) => console.log("Login Error", err));
