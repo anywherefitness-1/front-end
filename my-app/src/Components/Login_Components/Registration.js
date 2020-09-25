@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosWithAuth } from "../../Utils/axiosWithAuth";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,10 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const [isLoading, setIsLoading] = useState("");
   const [instructor, setInstructor] = useState({
     username: "",
     password: "",
@@ -60,24 +62,31 @@ const RegistrationForm = () => {
 
   // helper functions
   const loggingIn = (e) => {
+    e.preventDefault();
+
     axiosWithAuth()
-      .post(`/api/instructor/register`, instructor)
+      .post(
+        "https://fitnesssmaster.herokuapp.com/api/instructor/register",
+        instructor
+      )
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("username", res.data.username);
         localStorage.setItem("password", res.data.password);
-        console.log(res.data.token);
+        console.log(res.data);
         history.push("/InstructorClasses");
       })
       .catch((err) => console.log(err));
   };
 
   const changeHandler = (e) => {
+    e.preventDefault();
     setInstructor({
       ...instructor,
       [e.target.name]: e.target.value,
     });
   };
+  console.log(instructor.password);
   return (
     <div>
       <Grid container component="main" className={classes.root}>
@@ -86,11 +95,7 @@ const RegistrationForm = () => {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <div className={classes.paper}>
             <Avatar className={classes.avatar} />
-            <form
-              onClick={() => loggingIn()}
-              className={classes.form}
-              noValidate
-            >
+            <form onSubmit={loggingIn} className={classes.form} noValidate>
               <TextField
                 onChange={changeHandler}
                 variant="outlined"
