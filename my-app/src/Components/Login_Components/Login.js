@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { axiosWithAuth } from "../../Utils/axiosWithAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +67,7 @@ const LoginForm = () => {
   const loggingIn = () => {
     setIsLoading(true);
 
-    axios
+    axiosWithAuth()
       .post("https://fitnesssmaster.herokuapp.com/api/instructor/login", login)
       .then((res) => {
         console.log("res", res);
