@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { axiosWithAuth } from "../../Utils/axiosWithAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 // helper functions
 
-const LoginForm = (props) => {
+const LoginForm = () => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -66,13 +67,13 @@ const LoginForm = (props) => {
   const loggingIn = () => {
     setIsLoading(true);
 
-    axios
+    axiosWithAuth()
       .post("https://fitnesssmaster.herokuapp.com/api/instructor/login", login)
       .then((res) => {
         console.log("res", res);
-        localStorage.setItem("token", res.data.payload);
-        console.log(res.data);
-        props.history.push("/InstructorClasses");
+        localStorage.setItem("token", res.data.token);
+        console.log("token res", res.data.token);
+        history.push("/InstructorClasses");
       })
       .catch((err) => console.log("Login Error", err));
   };
@@ -93,11 +94,7 @@ const LoginForm = (props) => {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <div className={classes.paper}>
             <Avatar className={classes.avatar} />
-            <form
-              onClick={() => loggingIn()}
-              className={classes.form}
-              noValidate
-            >
+            <form onSubmit={loggingIn} className={classes.form} noValidate>
               <TextField
                 onChange={changeHandler}
                 variant="outlined"
