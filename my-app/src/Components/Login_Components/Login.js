@@ -64,7 +64,8 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState("");
 
   // helper functions
-  const loggingIn = () => {
+  const loggingIn = (e) => {
+    e.preventDefault();
     setIsLoading(true);
 
     axiosWithAuth()
